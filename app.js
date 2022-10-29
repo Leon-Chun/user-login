@@ -2,8 +2,6 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const PORT = process.env.PORT || 3000
 
-
-
 //使用套件後產生的
 const app = express()
 
