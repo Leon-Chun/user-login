@@ -2,6 +2,7 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const PORT = process.env.PORT || 3000
 const mongoose = require('mongoose')
+const userDB = require('./models/userDB')
 
 
 
@@ -12,8 +13,6 @@ const app = express()
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-
-
 
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' })) 
 app.set('view engine', 'handlebars')
@@ -34,6 +33,24 @@ db.once('open', () => { // 連線成功
 //router setting
 app.get('/', (req, res) => {
   res.render('index') //本來是 res.send 改成 res.render
+})
+
+app.post('/user_authentication/login',(req, res) => {
+  //get req.body.floatingInput / req.body.floatingPassword
+  const email = req.body.floatingInput
+  const password = req.body.floatingPassword
+
+  userDB.find({email , password})
+    .lean()
+    .then(userdata => {
+      if(userdata.length == 1){
+        res.render('success')
+      }else{
+        res.redirect('/')
+      }
+    })
+    .catch(err => console.log(err))
+
 })
 
 app.listen(PORT, () => {
