@@ -43,10 +43,10 @@ app.post('/user_authentication/login',(req, res) => {
   userDB.find({email , password})
     .lean()
     .then(userdata => {
-      if(userdata.length == 1){
+      if(userdata.length){
         res.render('success')
       }else{
-        res.redirect('/')
+        res.render('index',{error:"error"})
       }
     })
     .catch(err => console.log(err))
