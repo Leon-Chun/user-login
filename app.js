@@ -44,7 +44,8 @@ app.post('/user_authentication/login',(req, res) => {
     .lean()
     .then(userdata => {
       if(userdata.length){
-        res.render('success')
+        const username = userdata[0].firstName
+        res.render('success',{username})
       }else{
         res.render('index',{error:"error"})
       }
